@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGB LED Controller</title>
+</head>
+<body>
+    <h1>RGB LED Controller</h1>
+
+    <form id="colorForm">
+        <label>Red: <input type="number" id="red" min="0" max="255" value="0"></label><br>
+        <label>Green: <input type="number" id="green" min="0" max="255" value="0"></label><br>
+        <label>Blue: <input type="number" id="blue" min="0" max="255" value="0"></label><br>
+        <button type="submit">Set Color</button>
+    </form>
+
+    <button id="cycleButton">Start Color Cycle</button>
+
+    <script>
+        const form = document.getElementById('colorForm');
+        form.onsubmit = async (event) => {
+            event.preventDefault();
+            const red = document.getElementById('red').value;
+            const green = document.getElementById('green').value;
+            const blue = document.getElementById('blue').value;
+
+            await fetch('/api/set_color?r=' + red + '&g=' + green + '&b=' + blue, {
+                method: 'POST'
+            });
+        };
+
+        document.getElementById('cycleButton').onclick = async () => {
+            await fetch('/api/cycle_colors', { method: 'POST' });
+        };
+    </script>
+</body>
+</html>
